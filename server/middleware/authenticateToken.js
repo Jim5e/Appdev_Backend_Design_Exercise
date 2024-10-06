@@ -1,21 +1,17 @@
 const jwt = require('jsonwebtoken');
 
 const authenticateToken = (req, res, next) => {
-    console.log('Incoming request headers:', req.headers);// Log the incoming request headers
     const authHeader = req.headers['authorization'];
-    console.log("Authorization Header: " + authHeader); // Log the Authorization header
 
     const token = authHeader && authHeader.split(' ')[1]; // Extract the token
-    console.log("Extracted Token: " + token); // Log the extracted token
+
 
     if (token === null) {
-        console.log('No token provided');
         return res.sendStatus(401); // If no token, return Unauthorized
     }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) {
-            console.log('Token verification failed:', err);
             return res.sendStatus(403); // If token is invalid or expired, return Forbidden
         }
         req.user = user;
