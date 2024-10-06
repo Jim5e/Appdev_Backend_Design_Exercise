@@ -41,9 +41,11 @@ npm start
 ```
 
 ## Important
-Please dont forget to attach Authorization Headers in POSTMAN, don't be like me.
+1.) Please dont forget to attach Authorization Headers in POSTMAN, don't be like me.
 ```
 - In the "Headers" tab, add:
   - Key: Authorization
   - Value: Bearer <your_jwt_token>
 ```
+
+2.) Trying to login using the data in users.js will result in failure. This is because the passwords of the first three people are supposed to be hashed (in the array they are not). So to validate, you will have to create your own NEW user.
