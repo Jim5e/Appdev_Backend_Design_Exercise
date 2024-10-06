@@ -72,7 +72,6 @@ const loginUser = async (req, res) => {
 };
 
 const getUserProfile = (req, res) => {
-    console.log("USER IN USERPROFILE: ", req.user);
     try {
         const user = users.find(user => user.email === req.user.email);
         if (!user) {
