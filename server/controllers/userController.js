@@ -1,3 +1,4 @@
+require('dotenv').config();
 const users = require('../data/users');
 const jwt = require('jsonwebtoken');
 const joi = require('joi');
@@ -62,22 +63,27 @@ const loginUser = async (req, res) => {
         }
 
         //generate token for middleware authentication
-        const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        res.status(200).json({ token: token, message: 'Login successful' });
+        res.send({ token: token, message: 'Login successful' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-const getUserProfile = (req, res) => { //to retrieve user profile details
+const getUserProfile = (req, res) => {
+    console.log("USER IN USERPROFILE: ", req.user);
     try {
-        const user = users.find(user => user.username === req.user.username);
+        const user = users.find(user => user.email === req.user.email);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
         res.json(user);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-}
+};
+
 
 const getAllUsers = (req, res) => { //For debugging purposes only
     try {
